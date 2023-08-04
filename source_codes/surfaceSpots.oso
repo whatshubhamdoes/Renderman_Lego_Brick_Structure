@@ -1,0 +1,46 @@
+OpenShadingLanguage 1.00
+# Compiled by oslc 1.11.0@OPROJECT_VERSION_RELEASE_TYPE@
+# options: 
+surface surfaceSpots
+param	color	Cin	1 1 1		%read{2147483647,-1} %write{2147483647,-1}
+oparam	color	Cout	1 1 1		%read{2147483647,-1} %write{11,11}
+global	point	P	%read{0,4} %write{2147483647,-1}
+global	float	u	%read{3,3} %write{2147483647,-1}
+global	float	v	%read{8,8} %write{2147483647,-1}
+local	float	s	%read{9,9} %write{3,3}
+local	float	t	%read{10,10} %write{8,8}
+temp	float	$tmp1	%read{2,2} %write{1,1}
+const	string	$const1	"uperlin"		%read{1,6} %write{2147483647,-1}
+temp	point	$tmp2	%read{1,1} %write{0,0}
+const	float	$const3	5		%read{0,4} %write{2147483647,-1}
+const	float	$const4	0.5		%read{2,7} %write{2147483647,-1}
+temp	float	$tmp3	%read{3,3} %write{2,2}
+temp	float	$tmp4	%read{7,7} %write{6,6}
+temp	point	$tmp5	%read{5,5} %write{4,4}
+const	point	$const5	100 100 100		%read{5,5} %write{2147483647,-1}
+temp	point	$tmp7	%read{6,6} %write{5,5}
+temp	float	$tmp8	%read{8,8} %write{7,7}
+const	string	$const6	"cell"		%read{11,11} %write{2147483647,-1}
+temp	float	$tmp9	%read{11,11} %write{9,9}
+const	float	$const8	10		%read{9,10} %write{2147483647,-1}
+temp	float	$tmp10	%read{11,11} %write{10,10}
+code ___main___
+# surfaceSpots.osl:6
+#     float s=u+(float)noise("uperlin",P*5)*0.5;
+	mul		$tmp2 P $const3 	%filename{"surfaceSpots.osl"} %line{6} %argrw{"wrr"}
+	noise		$tmp1 $const1 $tmp2 	%argrw{"wrr"}
+	mul		$tmp3 $tmp1 $const4 	%argrw{"wrr"}
+	add		s u $tmp3 	%argrw{"wrr"}
+# surfaceSpots.osl:7
+#     float t=v+(float)noise("uperlin",P*5+point(100,100,100))*0.5;
+	mul		$tmp5 P $const3 	%line{7} %argrw{"wrr"}
+	add		$tmp7 $tmp5 $const5 	%argrw{"wrr"}
+	noise		$tmp4 $const1 $tmp7 	%argrw{"wrr"}
+	mul		$tmp8 $tmp4 $const4 	%argrw{"wrr"}
+	add		t v $tmp8 	%argrw{"wrr"}
+# surfaceSpots.osl:9
+#     Cout=(color)noise("cell",s*10,t*10);
+	mul		$tmp9 s $const8 	%line{9} %argrw{"wrr"}
+	mul		$tmp10 t $const8 	%argrw{"wrr"}
+	noise		Cout $const6 $tmp9 $tmp10 	%argrw{"wrrr"}
+	end

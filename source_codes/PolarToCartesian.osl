@@ -1,0 +1,20 @@
+shader PolarToCartesian(
+    string textureFile="",
+    float textureScale=1,
+    output point position = point(0),
+    output float z = 0,
+)
+{
+    float x=u*sin(2*M_PI*v);
+    float y=u*cos(2*M_PI*v);
+    z = 0;  // Assuming the coordinates lie in the XY plane
+    position = point(x, y, z);
+
+    if(textureFile !="")
+    {
+        float a= x*textureScale;
+        float b= y*textureScale;
+        color texColor=texture(textureFile,a,b);
+        position += vector(texColor);
+    }
+}

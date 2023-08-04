@@ -1,0 +1,10 @@
+surface surfaceSpots (
+	color Cin=1,
+output  color Cout=1
+)
+{
+    float s=u+(float)noise("uperlin",P*5)*0.5;
+    float t=v+(float)noise("uperlin",P*5+point(100,100,100))*0.5;
+
+    Cout=(color)noise("cell",s*10,t*10);
+}

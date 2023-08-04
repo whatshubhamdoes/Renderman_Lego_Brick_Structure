@@ -1,0 +1,13 @@
+shader Smudges(
+    color colourIn = color(1),
+    output color Cout = color(0)
+)
+{
+    float smudge_intensity=0.05;
+    point smudge=point(P[0]*30,P[1]* 30,P[2]* 30);
+    Cout= noise("perlin",smudge);
+    float smudge_final=Cout[0] * smudge_intensity;
+
+    color resultRGB = mix(colourIn,color(1,1,1),smudge_intensity);
+    Cout = resultRGB;
+}
